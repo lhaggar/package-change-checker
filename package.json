@@ -1,0 +1,39 @@
+{
+  "name": "package-change-checker",
+  "version": "1.0.0",
+  "description": "Run npm install when package json dependency changes",
+  "main": "src/cli.js",
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "mocha .mocha-setup.js src/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lhaggar/package-change-checker.git"
+  },
+  "author": "Lewis Haggar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lhaggar/package-change-checker/issues"
+  },
+  "homepage": "https://github.com/lhaggar/package-change-checker#readme",
+  "devDependencies": {
+    "chai": "4.2.0",
+    "dirty-chai": "2.0.1",
+    "eslint": "5.8.0",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-config-prettier": "3.1.0",
+    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-jsx-a11y": "6.1.2",
+    "eslint-plugin-prettier": "3.0.0",
+    "eslint-plugin-react": "7.11.1",
+    "mocha": "5.2.0",
+    "prettier": "1.14.3",
+    "sinon": "7.1.0",
+    "sinon-chai": "3.2.0"
+  },
+  "bin": {
+    "package-change-checker": "./src/cli.js"
+  }
+}
