@@ -27,5 +27,41 @@ describe('arg-parse.js', () => {
         });
       });
     });
+
+    describe('when quiet arg is provided', () => {
+      it('should return quiet as true', () => {
+        const actual = parse(['node', 'file.js', '--quiet']);
+
+        expect(actual).to.deep.equal({
+          quiet: true,
+        });
+      });
+    });
+
+    describe('when quiet arg is provided', () => {
+      it('should return quiet as true', () => {
+        const actual = parse(['node', 'file.js', '--quiet']);
+
+        expect(actual).to.deep.equal({
+          quiet: true,
+        });
+      });
+    });
+
+    describe('when multiple args are provided', () => {
+      it('should return two args', () => {
+        const actual = parse([
+          'node',
+          'file.js',
+          '--quiet',
+          '--install-cmd=yarn install && lerna bootstrap',
+        ]);
+
+        expect(actual).to.deep.equal({
+          quiet: true,
+          installCmd: 'yarn install && lerna bootstrap',
+        });
+      });
+    });
   });
 });
