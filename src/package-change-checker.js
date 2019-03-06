@@ -3,11 +3,15 @@ const os = require('os');
 const git = require('./git');
 const loader = require('./loader');
 
-const commit1 = 'ORIG_HEAD';
-const commit2 = 'HEAD';
+let commit1 = 'ORIG_HEAD';
+let commit2 = 'HEAD';
 
-const hasChangedDependencies = () =>
-  git
+const hasChangedDependencies = (hashes = []) => {
+  if (hashes.length === 2) {
+    // assume post-checkout scenario with two hashes given as params from Git
+    [commit1, commit2] = hashes;
+  }
+  return git
     .getDiff(commit1, commit2, 'package.json **/package.json')
     .split(os.EOL)
     .filter(Boolean)
@@ -20,6 +24,7 @@ const hasChangedDependencies = () =>
       packages =>
         JSON.stringify(packages.before) !== JSON.stringify(packages.after)
     );
+};
 
 module.exports = {
   hasChangedDependencies,

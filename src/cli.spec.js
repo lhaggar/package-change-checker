@@ -16,8 +16,13 @@ describe('cli.js', () => {
     processEnv = process.env;
   });
 
-  const setup = (hasChangedDependenciesResult, installCmd, quiet) => {
-    sandbox.stub(argParser, 'parse').returns({ installCmd, quiet });
+  const setup = (
+    hasChangedDependenciesResult,
+    installCmd,
+    quiet,
+    hashes = []
+  ) => {
+    sandbox.stub(argParser, 'parse').returns({ installCmd, quiet, hashes });
     sandbox
       .stub(checker, 'hasChangedDependencies')
       .returns(hasChangedDependenciesResult);
@@ -39,9 +44,7 @@ describe('cli.js', () => {
     it('should default to run npm install', () => {
       setup(true);
 
-      expect(
-        checker.hasChangedDependencies
-      ).to.have.been.calledOnceWithExactly();
+      expect(checker.hasChangedDependencies).to.have.been.calledOnce();
       expect(console.log).to.have.been.calledOnceWithExactly(
         `Dependencies have changed, running npm install...`
       );
@@ -54,9 +57,7 @@ describe('cli.js', () => {
     it('should allow overriding of install cmd', () => {
       setup(true, 'yarn install && lerna bootstrap');
 
-      expect(
-        checker.hasChangedDependencies
-      ).to.have.been.calledOnceWithExactly();
+      expect(checker.hasChangedDependencies).to.have.been.calledOnce();
       expect(console.log).to.have.been.calledOnceWithExactly(
         `Dependencies have changed, running yarn install && lerna bootstrap...`
       );
@@ -79,9 +80,7 @@ describe('cli.js', () => {
     it('should not run npm install', () => {
       setup(false);
 
-      expect(
-        checker.hasChangedDependencies
-      ).to.have.been.calledOnceWithExactly();
+      expect(checker.hasChangedDependencies).to.have.been.calledOnce();
       expect(console.log).to.have.been.calledOnceWithExactly(
         'No dependency changes!'
       );

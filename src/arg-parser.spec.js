@@ -38,28 +38,42 @@ describe('arg-parse.js', () => {
       });
     });
 
-    describe('when quiet arg is provided', () => {
-      it('should return quiet as true', () => {
-        const actual = parse(['node', 'file.js', '--quiet']);
+    describe('when hash arg is provided', () => {
+      it('should return hashes as array', () => {
+        const actual = parse([
+          'node',
+          'file.js',
+          'abcdef0123456789abcdef0123456789abcdef01',
+          'abcdef0123456789abcdef0123456789abcdef02',
+        ]);
 
         expect(actual).to.deep.equal({
-          quiet: true,
+          hashes: [
+            'abcdef0123456789abcdef0123456789abcdef01',
+            'abcdef0123456789abcdef0123456789abcdef02',
+          ],
         });
       });
     });
 
     describe('when multiple args are provided', () => {
-      it('should return two args', () => {
+      it('should return multiple args', () => {
         const actual = parse([
           'node',
           'file.js',
           '--quiet',
           '--install-cmd=yarn install && lerna bootstrap',
+          'abcdef0123456789abcdef0123456789abcdef01',
+          'abcdef0123456789abcdef0123456789abcdef02',
         ]);
 
         expect(actual).to.deep.equal({
           quiet: true,
           installCmd: 'yarn install && lerna bootstrap',
+          hashes: [
+            'abcdef0123456789abcdef0123456789abcdef01',
+            'abcdef0123456789abcdef0123456789abcdef02',
+          ],
         });
       });
     });
