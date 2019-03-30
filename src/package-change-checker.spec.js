@@ -201,7 +201,7 @@ describe('package-change-checker.js', () => {
       });
     });
 
-    describe('with post-checkout hook providing two hashes', () => {
+    describe('with post-checkout hook providing two commitish', () => {
       before(() => {
         checker.hasChangedDependencies([
           'abcdef0123456789abcdef0123456789abcdef01',
@@ -211,7 +211,7 @@ describe('package-change-checker.js', () => {
 
       after(teardown);
 
-      it('should get the diff with the two provided hashes', () => {
+      it('should get the diff with the two provided commitish', () => {
         expect(git.getDiff).to.have.been.calledOnceWithExactly(
           'abcdef0123456789abcdef0123456789abcdef01',
           'abcdef0123456789abcdef0123456789abcdef02',

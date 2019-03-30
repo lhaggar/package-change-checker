@@ -20,9 +20,9 @@ describe('cli.js', () => {
     hasChangedDependenciesResult,
     installCmd,
     quiet,
-    hashes = []
+    commitish = []
   ) => {
-    sandbox.stub(argParser, 'parse').returns({ installCmd, quiet, hashes });
+    sandbox.stub(argParser, 'parse').returns({ installCmd, quiet, commitish });
     sandbox
       .stub(checker, 'hasChangedDependencies')
       .returns(hasChangedDependenciesResult);

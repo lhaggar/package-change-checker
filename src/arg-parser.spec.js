@@ -38,8 +38,8 @@ describe('arg-parse.js', () => {
       });
     });
 
-    describe('when hash arg is provided', () => {
-      it('should return hashes as array', () => {
+    describe('when non-dash arg is provided', () => {
+      it('should return commit-ish as array', () => {
         const actual = parse([
           'node',
           'file.js',
@@ -48,7 +48,7 @@ describe('arg-parse.js', () => {
         ]);
 
         expect(actual).to.deep.equal({
-          hashes: [
+          commitish: [
             'abcdef0123456789abcdef0123456789abcdef01',
             'abcdef0123456789abcdef0123456789abcdef02',
           ],
@@ -70,7 +70,7 @@ describe('arg-parse.js', () => {
         expect(actual).to.deep.equal({
           quiet: true,
           installCmd: 'yarn install && lerna bootstrap',
-          hashes: [
+          commitish: [
             'abcdef0123456789abcdef0123456789abcdef01',
             'abcdef0123456789abcdef0123456789abcdef02',
           ],

@@ -6,9 +6,9 @@ const loader = require('./loader');
 const defaultCommit1 = 'ORIG_HEAD';
 const defaultCommit2 = 'HEAD';
 
-const hasChangedDependencies = (hashes = []) => {
-  const commit1 = hashes[0] || defaultCommit1;
-  const commit2 = hashes[1] || defaultCommit2;
+const hasChangedDependencies = (commitish = []) => {
+  const commit1 = commitish[0] || defaultCommit1;
+  const commit2 = commitish[1] || defaultCommit2;
 
   return git
     .getDiff(commit1, commit2, 'package.json **/package.json')

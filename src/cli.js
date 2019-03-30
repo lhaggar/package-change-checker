@@ -10,7 +10,7 @@ const checker = require('./package-change-checker');
 const {
   installCmd = 'npm install',
   quiet = false,
-  hashes = [],
+  commitish = [],
 } = argParser.parse(process.argv);
 
 const log = msg => {
@@ -20,7 +20,7 @@ const log = msg => {
 };
 
 if (process.env.PACKAGE_CHANGE_CHECKER_DISABLED !== 'true') {
-  if (checker.hasChangedDependencies(hashes)) {
+  if (checker.hasChangedDependencies(commitish)) {
     log(`Dependencies have changed, running ${installCmd}...`);
     childProcess.execSync(installCmd, {
       stdio: 'inherit',
