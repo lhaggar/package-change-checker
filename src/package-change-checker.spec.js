@@ -203,6 +203,12 @@ describe('package-change-checker.js', () => {
 
     describe('with post-checkout hook providing two commitish', () => {
       before(() => {
+        loaderStubsResults = {
+          'package.json': {
+            abcdef0123456789abcdef0123456789abcdef01: { somePackage: '1.2.3' },
+            abcdef0123456789abcdef0123456789abcdef02: { somePackage: '1.2.3' },
+          },
+        };
         checker.hasChangedDependencies([
           'abcdef0123456789abcdef0123456789abcdef01',
           'abcdef0123456789abcdef0123456789abcdef02',
@@ -216,6 +222,16 @@ describe('package-change-checker.js', () => {
           'abcdef0123456789abcdef0123456789abcdef01',
           'abcdef0123456789abcdef0123456789abcdef02',
           'package.json **/package.json'
+        );
+      });
+
+      it('should pass the provided commitish to loader', () => {
+        expect(loaderStubs['package.json']).to.have.been.calledTwice();
+        expect(loaderStubs['package.json']).to.have.been.calledWithExactly(
+          'abcdef0123456789abcdef0123456789abcdef01'
+        );
+        expect(loaderStubs['package.json']).to.have.been.calledWithExactly(
+          'abcdef0123456789abcdef0123456789abcdef02'
         );
       });
     });
