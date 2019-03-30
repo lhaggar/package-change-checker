@@ -74,6 +74,20 @@ describe('cli.js', () => {
         expect(console.log).not.to.have.been.called();
       });
     });
+
+    describe('when non-dash args are used', () => {
+      it('should use commitish for the check', () => {
+        const commitish = [
+          'abcdef0123456789abcdef0123456789abcdef01',
+          'abcdef0123456789abcdef0123456789abcdef02',
+        ];
+        setup(true, undefined, undefined, commitish);
+
+        expect(
+          checker.hasChangedDependencies
+        ).to.have.been.calledOnceWithExactly(commitish);
+      });
+    });
   });
 
   describe('when dependencies have not changed', () => {
