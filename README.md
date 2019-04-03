@@ -8,6 +8,7 @@ Add `package-change-checker` to your dev dependencies and call it as part of a g
 
 ### Supported Arguments
 
+ - Can override the ORIG_HEAD and HEAD defaults by passing commits/tags/branches, first commit will override ORIG_HEAD, second overrides HEAD. e.g. `package-change-checker 39ddb32 1d62193`
  - `--install-cmd="..."`:
 	 - Default: `npm install`
 	 - If the default npm install command is not suitable, you can override it, e.g.;
