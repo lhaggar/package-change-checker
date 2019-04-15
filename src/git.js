@@ -6,6 +6,15 @@ const run = cmd =>
     .toString()
     .trim();
 
+const isValidCommitish = commitish => {
+  try {
+    const type = run(`git cat-file -t ${commitish}`);
+    return type === 'commit' || type === 'tag';
+  } catch (e) {
+    return false;
+  }
+};
+
 const getDiff = (commit1, commit2, filter) =>
   run(
     `git diff-tree -r --name-only --no-commit-id ${commit1} ${commit2} ${filter}`
@@ -22,4 +31,5 @@ const getFileContent = (commit, path) => {
 module.exports = {
   getDiff,
   getFileContent,
+  isValidCommitish,
 };

@@ -4,7 +4,7 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const childProcess = require('child_process');
 
-const { getDiff, getFileContent } = require('./git');
+const { getDiff, getFileContent, isValidCommitish } = require('./git');
 
 describe('git.js', () => {
   let execResult;
@@ -70,6 +70,40 @@ describe('git.js', () => {
       const actual = getFileContent('the-commit-hash', 'file/path.js');
 
       expect(actual).to.equal('{}');
+    });
+  });
+
+  describe('isValidCommitish', () => {
+    it('should return true for commits', () => {
+      execResult = () => Buffer.from('commit');
+
+      const actual = isValidCommitish('the-commit-hash');
+
+      expect(actual).to.be.true();
+    });
+
+    it('should return true for tags', () => {
+      execResult = () => Buffer.from('tag');
+
+      const actual = isValidCommitish('the-commit-hash');
+
+      expect(actual).to.be.true();
+    });
+
+    it('should return false for types other than commits and tags', () => {
+      execResult = () => Buffer.from('blob');
+
+      const actual = isValidCommitish('the-commit-hash');
+
+      expect(actual).to.be.false();
+    });
+
+    it('should return false for invalid references', () => {
+      execResult = () => Buffer.from('rebase');
+
+      const actual = isValidCommitish('the-commit-hash');
+
+      expect(actual).to.be.false();
     });
   });
 });

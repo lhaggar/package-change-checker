@@ -18,6 +18,7 @@ describe('package-change-checker.js', () => {
 
     before(() => {
       sandbox.stub(git, 'getDiff').callsFake(() => diffResult || '');
+      sandbox.stub(git, 'isValidCommitish').callsFake(valid => !!valid);
       sandbox.stub(loader, 'createLoader').callsFake(path => {
         const stub = sinon
           .stub()
@@ -201,7 +202,7 @@ describe('package-change-checker.js', () => {
       });
     });
 
-    describe('with post-checkout hook providing two commitish', () => {
+    describe('with post-checkout hook providing two valid commitish', () => {
       before(() => {
         loaderStubsResults = {
           'package.json': {
@@ -217,7 +218,7 @@ describe('package-change-checker.js', () => {
 
       after(teardown);
 
-      it('should get the diff with the two provided commitish', () => {
+      it('should get the diff with the two provided valid commitish', () => {
         expect(git.getDiff).to.have.been.calledOnceWithExactly(
           'abcdef0123456789abcdef0123456789abcdef01',
           'abcdef0123456789abcdef0123456789abcdef02',
@@ -225,13 +226,54 @@ describe('package-change-checker.js', () => {
         );
       });
 
-      it('should pass the provided commitish to loader', () => {
+      it('should pass the provided valid commitish to loader', () => {
         expect(loaderStubs['package.json']).to.have.been.calledTwice();
         expect(loaderStubs['package.json']).to.have.been.calledWithExactly(
           'abcdef0123456789abcdef0123456789abcdef01'
         );
         expect(loaderStubs['package.json']).to.have.been.calledWithExactly(
           'abcdef0123456789abcdef0123456789abcdef02'
+        );
+      });
+    });
+
+    describe('with post-checkout hook providing invalid commitish', () => {
+      afterEach(teardown);
+
+      it('should use default commitish when one commitish provided', () => {
+        checker.hasChangedDependencies(['rebase']);
+        expect(git.isValidCommitish).to.not.have.been.called();
+        expect(git.getDiff).to.have.been.calledOnceWithExactly(
+          'ORIG_HEAD',
+          'HEAD',
+          'package.json **/package.json'
+        );
+      });
+
+      it('should use default commitish when two invalid commitish are provided', () => {
+        checker.hasChangedDependencies(['', '']);
+        expect(git.isValidCommitish).to.have.been.calledOnceWithExactly('');
+        expect(git.getDiff).to.have.been.calledOnceWithExactly(
+          'ORIG_HEAD',
+          'HEAD',
+          'package.json **/package.json'
+        );
+      });
+
+      it('should use default commitish when two commitish are provided of which one is invalid', () => {
+        checker.hasChangedDependencies([
+          'abcdef0123456789abcdef0123456789abcdef01',
+          '',
+        ]);
+        expect(git.isValidCommitish).to.have.been.calledTwice();
+        expect(git.isValidCommitish).to.have.been.calledWithExactly(
+          'abcdef0123456789abcdef0123456789abcdef01'
+        );
+        expect(git.isValidCommitish).to.have.been.calledWithExactly('');
+        expect(git.getDiff).to.have.been.calledOnceWithExactly(
+          'ORIG_HEAD',
+          'HEAD',
+          'package.json **/package.json'
         );
       });
     });
