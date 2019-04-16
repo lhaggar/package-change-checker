@@ -1,6 +1,6 @@
 {
   "name": "package-change-checker",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Run npm install when package json dependency changes",
   "main": "src/cli.js",
   "scripts": {
