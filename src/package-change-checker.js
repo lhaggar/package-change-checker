@@ -7,8 +7,16 @@ const defaultCommit1 = 'ORIG_HEAD';
 const defaultCommit2 = 'HEAD';
 
 const hasChangedDependencies = (commitish = []) => {
-  const commit1 = commitish[0] || defaultCommit1;
-  const commit2 = commitish[1] || defaultCommit2;
+  let commit1 = defaultCommit1;
+  let commit2 = defaultCommit2;
+  if (commitish.length === 2) {
+    if (
+      git.isValidCommitish(commitish[0]) &&
+      git.isValidCommitish(commitish[1])
+    ) {
+      [commit1, commit2] = commitish;
+    }
+  }
 
   return git
     .getDiff(commit1, commit2, 'package.json **/package.json')
