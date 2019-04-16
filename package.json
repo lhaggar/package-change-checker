@@ -5,7 +5,9 @@
   "main": "src/cli.js",
   "scripts": {
     "start": "node src/cli.js",
-    "test": "mocha .mocha-setup.js src/*.spec.js"
+    "test": "mocha .mocha-setup.js src/*.spec.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",

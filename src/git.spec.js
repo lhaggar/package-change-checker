@@ -98,8 +98,10 @@ describe('git.js', () => {
       expect(actual).to.be.false();
     });
 
-    it('should return false for invalid references', () => {
-      execResult = () => Buffer.from('rebase');
+    it('should return false for errors', () => {
+      execResult = () => {
+        throw new Error(`fatal: Not a valid object name the-commit-hash`);
+      };
 
       const actual = isValidCommitish('the-commit-hash');
 
