@@ -213,6 +213,7 @@ describe('package-change-checker.js', () => {
         checker.hasChangedDependencies([
           'abcdef0123456789abcdef0123456789abcdef01',
           'abcdef0123456789abcdef0123456789abcdef02',
+          '1',
         ]);
       });
 
@@ -251,7 +252,7 @@ describe('package-change-checker.js', () => {
       });
 
       it('should use default commitish when two invalid commitish are provided', () => {
-        checker.hasChangedDependencies(['', '']);
+        checker.hasChangedDependencies(['', '', '1']);
         expect(git.isValidCommitish).to.have.been.calledOnceWithExactly('');
         expect(git.getDiff).to.have.been.calledOnceWithExactly(
           'ORIG_HEAD',
@@ -264,6 +265,7 @@ describe('package-change-checker.js', () => {
         checker.hasChangedDependencies([
           'abcdef0123456789abcdef0123456789abcdef01',
           '',
+          '1'
         ]);
         expect(git.isValidCommitish).to.have.been.calledTwice();
         expect(git.isValidCommitish).to.have.been.calledWithExactly(
