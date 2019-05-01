@@ -9,7 +9,7 @@ const defaultCommit2 = 'HEAD';
 const hasChangedDependencies = (commitish = []) => {
   let commit1 = defaultCommit1;
   let commit2 = defaultCommit2;
-  if (commitish.length === 2) {
+  if (commitish.length >= 2) {
     if (
       git.isValidCommitish(commitish[0]) &&
       git.isValidCommitish(commitish[1])
